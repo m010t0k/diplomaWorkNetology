@@ -88,14 +88,18 @@ class Level {
         if (!(destination instanceof Vector) && !(sizeOfObject instanceof Vector)) {
             throw new Error("Первый и второй объект не являются Vector");
         }
-        if (destination.y + sizeOfObject.y > this.height) {
+        const startX = Math.floor(destination.x);
+        const endX = Math.ceil(destination.x + sizeOfObject.x);
+        const startY = Math.floor(destination.y);
+        const endY = Math.ceil(destination.y + sizeOfObject.y);
+        if (endY > this.height) {
             return "lava";
         }
-        if (destination.x < 0 || destination.x + sizeOfObject.x > this.width || destination.y < 0) {
+        if (startX < 0 || endX > this.width || startY < 0) {
             return "wall";
         }
-        for (let row = Math.floor(destination.y); row < Math.ceil(destination.y + sizeOfObject.y); row++) {
-            for (let column = Math.floor(destination.x); column < Math.ceil(destination.x + sizeOfObject.x); column++) {
+        for (let row = startY; row < endY; row++) {
+            for (let column = startX; column < endX; column++) {
                 const obstacle = this.grid[row][column];
                 if(obstacle) {
                     return obstacle;
